@@ -15,10 +15,16 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+
+
 Route::group(['middleware' => ['web']], function () {
   
+     Route::get('/logout',[
+        'uses'=> 'PostController@getLogout',
+        'as'=>'logout'
+        ]);
 
-   Route::post('/signup', [
+    Route::post('/signup', [
         'uses' => 'UserController@postSignUp',
         'as' => 'signup'
     ]);
@@ -36,9 +42,36 @@ Route::group(['middleware' => ['web']], function () {
         'uses' => 'PostController@postCreate',
         'as' => 'cpost'
     ]);
+    Route::get('/postdelete/{post_id}',[
+        'uses' => 'PostController@getDeletePost',
+        'as'=>'post.delete',
+        'middleware' => 'auth'
+]);
+Route::get('/account',[
+'uses'=>'UserController@getAccount',
+'as'=>'account'
+]);
+Route::post('/updateaccount',[
+'uses'=>'UserController@postSaveAccount',
+'as'=> 'account.save'
+]);
 
+Route::post('/like',[
+    'uses' => 'PostController@postLikePost',
+    'as'=>'like'
+    ]);
+
+Route::post('/edit', function(\Illuminate\Http\Request $request){
+    return response()->json(['message'=> $request['postId']]);
+
+})->name('edit');
 
 }); 
+
+Route::post('/edit',[
+'uses'=>'PostController@postEditPost',
+'as' => 'edit'
+]);
 
 
 //Route::post('/signup', 'UserController@postSignUp')->name('signup');
