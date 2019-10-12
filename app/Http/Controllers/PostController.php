@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use App\Post;
 use App\Like;
+use App\User;
 use Illuminate\Http\Request;
 //use App\Http\Controllers\Response;
 use Illuminate\Support\Facades\Auth;
@@ -55,7 +56,7 @@ class PostController extends Controller{
     }
     public function postLikePost(Request $request){
         $post_id = $request['postId'];
-        $is_Like = $request['isLike'] === 'true' ;
+        $is_like = $request['isLike'] === 'true' ;
         $update = false;
         $post = Post::find($post_id);
         if(!$post){
